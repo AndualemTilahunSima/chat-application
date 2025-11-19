@@ -1,6 +1,9 @@
-import "./Chat.css"
+import "./Chat.css";
+import type { ChatMessage } from "./ChatMessages";
 
-export default function ChatBubble({ side, text, time }) {
+type ChatBubbleProps = ChatMessage;
+
+export default function ChatBubble({ side, text, time }: ChatBubbleProps) {
   return (
     <div className={`msg ${side === "right" ? "right" : "left"}`}>
       {text}

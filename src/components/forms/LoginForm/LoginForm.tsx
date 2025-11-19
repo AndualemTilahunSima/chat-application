@@ -1,5 +1,5 @@
 import "./LoginForm.css";
-
+import { type FormEvent } from "react";
 import { MessageCircleIcon } from "../../Icons/MessageCircleIcon";
 import { TextInput } from "../../ui/TextInput/TextInput";
 import { Button } from "../../ui/Button/Button";
@@ -8,9 +8,11 @@ import { useNavigate } from "react-router-dom";
 export function LoginForm() {
     const navigate = useNavigate();
 
-    function handleDashBoard() {
+    function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
         navigate("/dashboard");
     }
+
     return (
         <div className="login-container">
             <div className="login-header">
@@ -22,27 +24,27 @@ export function LoginForm() {
             </div>
 
             <div className="login-body">
-                <form>
-                    <label>
-                        Email
-                    </label>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="loginEmail">Email</label>
 
                     <TextInput
-                        required={true}
+                        required
                         type="email"
+                        id="loginEmail"
                         placeholder="Enter your email"
+                        autoComplete="email"
                     />
 
-                    <label>
-                        Password
-                    </label>
+                    <label htmlFor="loginPassword">Password</label>
 
                     <TextInput
-                        required={true}
+                        required
                         type="password"
+                        id="loginPassword"
                         placeholder="Enter your password"
+                        autoComplete="current-password"
                     />
-                    <Button onClick={handleDashBoard}>Sign in</Button>
+                    <Button type="submit">Sign in</Button>
                 </form>
             </div>
         </div>

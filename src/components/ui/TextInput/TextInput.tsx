@@ -1,5 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ChangeEvent } from "react";
 import "./TextInput.css";
+
+type TextInputProps = {
+  type?: string;
+  placeholder?: string;
+  defaultValue?: string;
+  required?: boolean;
+  disabled?: boolean;
+  value?: string;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  width?: string | number;
+  className?: string;
+  name?: string;
+  autoComplete?: string;
+  id?: string;
+};
 
 export function TextInput({
   type = "text",
@@ -10,23 +25,29 @@ export function TextInput({
   value,
   onChange,
   width = "100%",
-}) {
-  const [internalValue, setInternalValue] = useState(value ?? defaultValue);
+  className = "",
+  name,
+  autoComplete,
+  id,
+}: TextInputProps) {
+  const [internalValue, setInternalValue] = useState<string>(
+    value ?? defaultValue ?? ""
+  );
 
-  // Sync internal state when parent updates value
   useEffect(() => {
     if (value !== undefined) {
       setInternalValue(value);
     }
   }, [value]);
 
-  const handleChange = (e) => {
-    setInternalValue(e.target.value);
-    onChange?.(e); // only call if provided
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInternalValue(event.target.value);
+    onChange?.(event);
   };
 
   return (
     <input
+      className={`text-input ${className}`.trim()}
       type={type}
       placeholder={placeholder}
       required={required}
@@ -34,6 +55,9 @@ export function TextInput({
       value={internalValue}
       onChange={handleChange}
       style={{ width }}
+      name={name}
+      autoComplete={autoComplete}
+      id={id}
     />
   );
 }

@@ -1,16 +1,26 @@
-export function ChevronLeftIcon(props) {
+type IconProps = {
+    size?: number;
+    color?: string;
+    className?: string;
+};
+
+export function ChevronLeftIcon({
+    size = 24,
+    color = "currentColor",
+    className = "",
+}: IconProps) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            width={props.size || 24}
-            height={props.size || 24}
+            width={size}
+            height={size}
             viewBox="0 0 24 24"
             fill="none"
-            stroke="currentColor"
+            stroke={color}
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className={`lucide lucide-chevron-left ${props.className || ""}`}
+            className={`lucide lucide-chevron-left ${className}`.trim()}
             aria-hidden="true"
         >
             <path d="m15 18-6-6 6-6"></path>

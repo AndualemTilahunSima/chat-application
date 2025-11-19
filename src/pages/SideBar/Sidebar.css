@@ -70,6 +70,13 @@
   background: #e2e2e6ff;
 }
 
+.icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+}
+
 
 .sidebar.collapsed .sidebar-item {
   justify-content: center;

@@ -6,7 +6,15 @@
     color: white;
     border: 0;
     width: 100%;
+    font-weight: 600;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
 }
 .app-button:hover{
     background-color: #47968e;
+}
+
+.app-button:disabled,
+.app-button:disabled:hover{
+    background-color: #b2dcd7;
+    cursor: not-allowed;
 }

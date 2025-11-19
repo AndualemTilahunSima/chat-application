@@ -1,14 +1,21 @@
+import type { ButtonHTMLAttributes, PropsWithChildren } from "react";
 import "./Button.css";
 
-export function Button({ children, type = "button", onClick }) {
+type ButtonProps = PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>;
+
+export function Button({
+    children,
+    type = "button",
+    className = "",
+    ...rest
+}: ButtonProps) {
     return (
         <button
-            className="app-button"
+            className={`app-button ${className}`.trim()}
             type={type}
-            onClick={onClick}   // ← add this
+            {...rest}
         >
             {children}
         </button>
     );
 }
-

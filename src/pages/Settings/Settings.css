@@ -40,3 +40,79 @@
   font-size: 1rem;
   background-color: #f9fafb;
 }
+
+.settings-panel {
+  margin-top: 1.5rem;
+}
+
+.settings-panel-title {
+  margin-bottom: 0.5rem;
+}
+
+.settings-panel-description {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.profile-photo-section {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #929292;
+}
+
+.profile-photo-box {
+  position: relative;
+  width: 5rem;
+  height: 5rem;
+}
+
+.profile-photo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.camera-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #23c7a7;
+  color: white;
+  padding: 0.35rem;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+.profile-desc {
+  max-width: 12rem;
+}
+
+.settings-input-group {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.settings-input-group label {
+  font-size: 0.9rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.settings-note {
+  font-size: 0.85rem;
+  color: #929292;
+}
+
+.app-button.settings-submit-btn {
+  margin-top: 1.5rem;
+}

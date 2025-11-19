@@ -6,13 +6,19 @@ import { SettingsIcon } from "../../components/Icons/SettingsIcon";
 import SidebarItem from "./SidebarItem";
 import "./Sidebar.css";
 
-export default function Sidebar({ onSelect }) {
-  const [collapsed, setCollapsed] = useState(false);
-  const [activeItem, setActiveItem] = useState("Chats");
+export type SidebarOption = "Chats" | "Settings";
 
-  function handleSelect(item) {
+type SidebarProps = {
+  onSelect: (option: SidebarOption) => void;
+};
+
+export default function Sidebar({ onSelect }: SidebarProps) {
+  const [collapsed, setCollapsed] = useState(false);
+  const [activeItem, setActiveItem] = useState<SidebarOption>("Chats");
+
+  function handleSelect(item: SidebarOption) {
     setActiveItem(item);
-    onSelect(item); // 🔥 notify parent
+    onSelect(item);
   }
 
   return (

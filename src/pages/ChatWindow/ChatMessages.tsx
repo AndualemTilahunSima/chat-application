@@ -1,46 +1,61 @@
-export const chatThreads = [
+export type ChatThread = {
+    id: number;
+    name: string;
+    avatar: string;
+    preview: string;
+    time: string;
+    unread?: number;
+};
+
+export type ChatMessage = {
+    side: "left" | "right";
+    text: string;
+    time: string;
+};
+
+export const chatThreads: ChatThread[] = [
     {
-      id: 1,
-      name: "Alice Johnson",
-      avatar:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
-      preview: "See you tomorrow!",
-      time: "5d ago",
-      unread: 2,
+        id: 1,
+        name: "Alice Johnson",
+        avatar:
+            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
+        preview: "See you tomorrow!",
+        time: "5d ago",
+        unread: 2,
     },
     {
-      id: 2,
-      name: "Bob Smith",
-      avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop",
-      preview: "Thanks for the update!",
-      time: "5d ago",
+        id: 2,
+        name: "Bob Smith",
+        avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop",
+        preview: "Thanks for the update!",
+        time: "5d ago",
     },
     {
-      id: 3,
-      name: "Carol White",
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
-      preview: "Let me know when you're free",
-      time: "6d ago",
+        id: 3,
+        name: "Carol White",
+        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
+        preview: "Let me know when you're free",
+        time: "6d ago",
     },
     {
-      id: 4,
-      name: "David Brown",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
-      preview: "Sounds good 👍",
-      time: "11/10/2025",
+        id: 4,
+        name: "David Brown",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
+        preview: "Sounds good 👍",
+        time: "11/10/2025",
     },
     {
-      id: 5,
-      name: "Emma Davis",
-      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
-      preview: "Can you send me the files?",
-      time: "11/9/2025",
-      unread: 1,
+        id: 5,
+        name: "Emma Davis",
+        avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
+        preview: "Can you send me the files?",
+        time: "11/9/2025",
+        unread: 1,
     },
-  ];
+];
 
 
-const AliceMessages = [
+const AliceMessages: ChatMessage[] = [
     { side: "left", text: "Hey! How are you doing?", time: "03:27 PM" },
     {
         side: "right",
@@ -75,7 +90,7 @@ const AliceMessages = [
 ];
 
 
-const BobSmithMessages = [
+const BobSmithMessages: ChatMessage[] = [
     { side: "right", text: "Did you finished the project?", time: "08:36 AM" },
     {
         side: "left",
@@ -87,7 +102,7 @@ const BobSmithMessages = [
 
 ];
 
-const CarolWhiteMessages = [
+const CarolWhiteMessages: ChatMessage[] = [
     {
         side: "left",
         text: "Hey, do you have time to chat?",
@@ -98,13 +113,13 @@ const CarolWhiteMessages = [
 
 ];
 
-const DavidBrownMessages = [
+const DavidBrownMessages: ChatMessage[] = [
     { side: "right", text: "Meeting at 3 PM?", time: "10:36 AM" },
     { side: "left", text: "Sounds good 👍", time: "11:36 AM" },
 
 ];
 
-const EmmaDavisMessages = [
+const EmmaDavisMessages: ChatMessage[] = [
     {
         side: "left",
         text: "Hi! How's everything going?",
@@ -115,10 +130,10 @@ const EmmaDavisMessages = [
 
 ];
 
-export const ChatList = {
+export const chatMessagesByThread: Record<number, ChatMessage[]> = {
     1: AliceMessages,
     2: BobSmithMessages,
     3: CarolWhiteMessages,
     4: DavidBrownMessages,
     5: EmmaDavisMessages,
-}
+};

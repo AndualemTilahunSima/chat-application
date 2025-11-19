@@ -1,4 +1,4 @@
-input {
+.text-input {
     padding: 0.5rem;
     border: none;
     border-radius: 0.25rem;
@@ -8,7 +8,7 @@ input {
     width: 100%;
 }
 
-input:focus {
+.text-input:focus {
     outline: none;
     box-shadow: 0 0 0 1px rgba(148, 154, 147, 0.8);
 }

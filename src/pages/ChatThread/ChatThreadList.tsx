@@ -1,13 +1,13 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import "./ChatThread.css"
 import ChatThreadItem from "./ChatThreadItem";
 import { Search } from "../../components/ui/Search/Search";
-import { ChatContext } from "../ChatContext/ChatContext";
+import { useChatContext } from "../ChatContext/ChatContext";
 import { chatThreads } from "../ChatWindow/ChatMessages";
 
 export default function ChatThreadList() {
   const [search, setSearch] = useState("");
-  const { selectedThreadId, setSelectedThreadId } = useContext(ChatContext);
+  const { selectedThreadId, setSelectedThreadId } = useChatContext();
 
 
   
@@ -20,7 +20,7 @@ export default function ChatThreadList() {
       chatThread.preview.toLowerCase().includes(text)
     );
   });
-  const handleSearch = (value) => {
+  const handleSearch = (value: string) => {
     setSearch(value)
   };
 
@@ -29,7 +29,11 @@ export default function ChatThreadList() {
 
       <h5>Messages</h5>
 
-      <Search placeholder="Search conversations..." onChange={handleSearch} />
+      <Search
+        placeholder="Search conversations..."
+        onChange={handleSearch}
+        value={search}
+      />
 
       <div className="chat-threads-list">
         {filteredChatThreads.length === 0 ? (

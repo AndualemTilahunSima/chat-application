@@ -1,6 +1,6 @@
 import ChatWindow from "../ChatWindow/ChatWindow";
 import ChatThreadList from "../ChatThread/ChatThreadList";
-import Sidebar from "../SideBar/Sidebar";
+import Sidebar, { type SidebarOption } from "../SideBar/Sidebar";
 
 import "./DashBoardPage.css";
 import Settings from "../Settings/Settings";
@@ -8,7 +8,7 @@ import { useState } from "react";
 import { ChatProvider } from "../ChatContext/ChatContext";
 
 export default function DashBoardPage() {
-  const [option, setOption] = useState("Chats");
+  const [option, setOption] = useState<SidebarOption>("Chats");
 
   return (
     <div className="chatapp-container">
