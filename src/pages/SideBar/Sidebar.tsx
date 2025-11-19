@@ -47,8 +47,10 @@ export default function Sidebar({ onSelect }) {
       </div>
 
       <div className="sidebar-footer">
-        <LogoutIcon size={18} />
-        {!collapsed && "Logout"}
+        <div className="logout">
+          <LogoutIcon size={18} />
+          {!collapsed && "Logout"}
+        </div>
       </div>
     </div>
   );

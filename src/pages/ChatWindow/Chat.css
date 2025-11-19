@@ -31,21 +31,33 @@
   flex: 1;
   padding: 1.5rem;
   overflow-y: auto;
+  background-color: #f9fafb;
 }
 
 .msg {
   padding: 0.8rem 1rem;
   background: #f7f7f7;
   margin-bottom: 10px;
-  border-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
   max-width: 60%;
   position: relative;
+}
+
+.msg.left {
+  background: #ffffff;
+  color: black;
+  margin-right: auto;
+  width: fit-content;
 }
 
 .msg.right {
   background: #22b8a4;
   color: white;
   margin-left: auto;
+  align-self: flex-start;
+  width: fit-content;
 }
 
 .time {
@@ -55,7 +67,8 @@
 }
 
 .chat-input {
-  border-top: 1px solid #eee;
+  display: flex;
+  align-items: center;
   padding: 1rem;
 }
 

@@ -1,11 +1,16 @@
 export default function ChatThreadItem({
+  id,
   avatar,
   name,
   preview,
   time,
   unread,
   active,
+  onClick
 }) {
+  function handleOnClick() {
+    if (onClick) onClick(id);
+  }
   return (
     <>
       <style>{`
@@ -14,6 +19,11 @@ export default function ChatThreadItem({
   padding: 0.8rem;
   gap: 1rem;
   border-radius: 12px;
+  cursor: pointer;
+  border:0;
+  outline:0;
+  width:100%;
+  background:none;
   cursor: pointer;
 }
 
@@ -64,7 +74,7 @@ export default function ChatThreadItem({
   justify-content:center;
 }
       `}</style>
-      <div className={`chat-thread-item ${active ? "active" : ""}`}>
+      <button className={`chat-thread-item ${active ? "active" : ""}`} onClick={() => handleOnClick(id)}>
         <img src={avatar} className="avatar" />
 
         <div className="chat-thread-info">
@@ -77,7 +87,7 @@ export default function ChatThreadItem({
             <div>{unread && <div className="badge">{unread}</div>}</div>
           </div>
         </div>
-      </div>
+      </button>
     </>
   );
 }
