@@ -1,0 +1,61 @@
+:root{
+    font-size: 16px;
+}
+
+.login-container {
+    padding: 2rem;
+    width: 25rem;
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+
+}
+
+.login-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-wrapper {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background-color: #00bba7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-wrapper MessageCircleIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+
+}
+
+.chat-app-web {
+    color: #00bba7;
+    margin-bottom: 0rem;
+}
+
+.sign-in {
+    margin-top: 0.3rem;
+    color: #939aa3;
+}
+
+.login-body form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+}
+
+.login-body form label {
+    font-weight: bold;
+}
+
+h4{
+    text-align: center;
+    font-weight: inherit;
+}

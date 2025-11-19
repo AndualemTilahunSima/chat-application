@@ -1,0 +1,11 @@
+/* MIDDLE PANEL */
+.chat-threads-panel {
+  width: 18rem;
+  border-right: 1px solid #eee;
+  padding: 1.5rem 1rem;
+}
+
+
+.chat-threads-list{
+  margin-top: 2rem;
+}

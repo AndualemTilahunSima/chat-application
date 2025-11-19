@@ -1,0 +1,12 @@
+.app-button{
+    border-radius: 0.25rem;
+    background-color: #00bba7;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    color: white;
+    border: 0;
+    width: 100%;
+}
+.app-button:hover{
+    background-color: #47968e;
+}
