@@ -6,6 +6,7 @@
 .settings-left {
   width: 18rem;
   padding: 1.5rem 1rem;
+  padding-right: 2rem;
   background: #fff;
   border-right: 1px solid #eee;
 }

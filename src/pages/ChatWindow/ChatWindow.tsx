@@ -5,6 +5,12 @@ import { chatMessagesByThread, chatThreads } from "./ChatMessages";
 import { useChatContext } from "../ChatContext/ChatContext";
 import { TextInput } from "../../components/ui/TextInput/TextInput";
 import { Button } from "../../components/ui/Button/Button";
+import { EllipsisVerticalIcon } from "../../components/Icons/EllipsisVerticalIcon";
+import { PaperclipIcon } from "../../components/Icons/PaperclipIcon";
+import { SmileIcon } from "../../components/Icons/SmileIcon";
+import { SendIcon } from "../../components/Icons/SendIcon";
+import { MicIcon } from "../../components/Icons/MicIcon";
+import { VideoIcon } from "../../components/Icons/VideoIcon";
 
 export default function ChatWindow() {
   const { selectedThreadId } = useChatContext();
@@ -50,9 +56,11 @@ export default function ChatWindow() {
         <img className="avatar" src={activeThread.avatar} />
         <div>
           <div className="chat-name">{activeThread.name}</div>
-          <div className="chat-status">online</div>
+          <span className="chat-status">online</span>
         </div>
-        <div className="chat-menu">⋮</div>
+        <div className="chat-menu">
+          <EllipsisVerticalIcon size={18}></EllipsisVerticalIcon>
+        </div>
       </div>
 
       <div className="chat-messages">
@@ -71,19 +79,31 @@ export default function ChatWindow() {
       </div>
 
       <div className="chat-input">
+        <div className="chat-input-icon">
+          <SmileIcon size={20} color="#000" />
+        </div>
+        <div className="chat-input-icon">
+          <PaperclipIcon size={20} color="#000" />
+        </div>
         <TextInput
           type="text"
           placeholder="Type a message..."
           value={draftMessage}
           onChange={handleDraftChange}
         />
+        <div className="chat-input-icon">
+          <MicIcon size={20} color="#000" />
+        </div>
+        <div className="chat-input-icon">
+          <VideoIcon size={20} color="#000" />
+        </div>
         <Button
           type="button"
           onClick={handleSend}
           disabled={!draftMessage.trim()}
           className="chat-send-btn"
         >
-          Send
+          <SendIcon size={18} />
         </Button>
       </div>
     </div>

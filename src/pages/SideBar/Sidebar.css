@@ -92,17 +92,13 @@
 }
 
 .logout{
-
   display: flex;  
   gap: 1rem;
   width: 100%;
   border-radius: 10px;
   padding: 0.5rem;
 }
+
 .logout:hover{
   background-color: #e72a2a10;
-}
-
-.sidebar.collapsed .sidebar-footer {
-  justify-content: center;
 }
