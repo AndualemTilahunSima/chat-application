@@ -1,12 +1,12 @@
 type ChatThreadItemProps = {
-  id: number;
+  id: string;
   avatar: string;
   name: string;
   preview: string;
   time: string;
   unread?: number;
   active?: boolean;
-  onClick?: (id: number) => void;
+  onClick?: (id: string) => void;
 };
 
 export default function ChatThreadItem({

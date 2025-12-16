@@ -2,8 +2,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import userInfo from "../../assets/users.json";
-
 // Utility function to decode JWT token
 function decodeJWT(token: string): { sub?: string; email?: string } | null {
   try {

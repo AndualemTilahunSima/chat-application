@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo } from "react";
 import ChatBubble from "./ChatBubble";
 import "./Chat.css";
 import { EllipsisVerticalIcon } from "../../Icons/EllipsisVerticalIcon";
@@ -18,7 +18,7 @@ export default function ChatWindow() {
 
   // Current thread from Redux
   const currentThread = useAppSelector(selectCurrentThread) || {
-    id: -1,
+    id: "-1",
     name: "",
     avatar: "",
     preview: "",
@@ -41,12 +41,13 @@ export default function ChatWindow() {
 
   // Load messages for the current thread
   useEffect(() => {
-    if (currentThread.id !== -1 && typeof currentThread.id === 'string') {
-      dispatch(loadMessagesByThread(currentThread.id));
+    if (currentThread.id && currentThread.id !== "-1") {
+      const threadId = String(currentThread.id);
+      dispatch(loadMessagesByThread(threadId));
       // Mark thread as read when opened
-      dispatch(markThreadAsRead(currentThread.id));
+      dispatch(markThreadAsRead(threadId));
       if (webSocketService.isConnected()) {
-        webSocketService.markThreadAsRead(currentThread.id);
+        webSocketService.markThreadAsRead(threadId);
       }
     }
   }, [currentThread.id, dispatch]);
@@ -128,26 +129,21 @@ export default function ChatWindow() {
     if (!decoded?.sub) return;
     
     const currentUserId = decoded.sub;
-    const threadId = String(currentThread.id);
-    
-    // TODO: For now, we need receiverId from thread data
-    // Since default threads from JSON don't have participant IDs,
-    // this needs to be handled by loading threads from backend API
-    // For now, this will work when threads are loaded from backend
-    // For JSON threads, we'd need to map them to user IDs
-    
-    // Try to get receiverId from the thread's participantIds (if available from backend)
-    // For now, we'll use the threadId and let the backend handle thread creation
-    // This is a placeholder - in production, threads should store participant information
-    const receiverId = ""; // This should come from thread.participantIds (other than currentUserId)
-    
-    // If we have a valid threadId (string UUID), try to send via WebSocket
-    // Otherwise, use REST API which will create the thread
-    if (threadId && receiverId && webSocketService.isConnected()) {
+    const threadId = String(activeThread.id);
+    const receiverId = activeThread.receiverId;
+
+    if (!threadId || !receiverId) {
+      console.warn("Cannot send message: missing thread or receiver information");
+      setDraftMessage("");
+      return;
+    }
+
+    // Prefer WebSocket for real-time messaging
+    if (webSocketService.isConnected()) {
       webSocketService.sendMessage(threadId, receiverId, draftMessage.trim());
     } else {
-      // For now, just clear the draft - proper implementation needs thread participant info
-      console.warn("Cannot send message: missing thread or receiver information");
+      // Fallback to REST API
+      dispatch(sendMessage({ threadId, receiverId, text: draftMessage.trim() }));
     }
     
     setDraftMessage("");

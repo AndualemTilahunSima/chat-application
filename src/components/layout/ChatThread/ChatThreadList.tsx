@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./ChatThread.css"
 import ChatThreadItem from "./ChatThreadItem";
 import { Search } from "../../ui/Search/Search";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { selectChatThreads, selectChatThread, selectCurrentThread, markThreadAsRead as markThreadAsReadAction } from "../../../store/slices/chatThreadSlice";
+import { selectChatThreads, selectChatThread, selectCurrentThread, markThreadAsRead as markThreadAsReadAction, type ChatThread } from "../../../store/slices/chatThreadSlice";
 import { markThreadAsRead } from "../../../store/slices/chatMessageSlice";
 import { webSocketService } from "../../../services/websocket.service";
 
@@ -13,14 +13,14 @@ export default function ChatThreadList() {
   // const { selectedThreadId, setSelectedThreadId } = useChatContext();
   const chatThreads = useAppSelector(selectChatThreads);
   const dispatch = useAppDispatch();
-  const currentThread = useAppSelector(selectCurrentThread) || { id: -1, name: "", avatar: "", preview: "", unread: 0 };
+  const currentThread = useAppSelector(selectCurrentThread) || { id: "-1", name: "", avatar: "", preview: "", unread: 0 };
 
   
 
   // const chatThreads = Threads.chatThreads
 
   // ---- FILTERING ----
-  const filteredChatThreads = chatThreads.filter((chatThread) => {
+  const filteredChatThreads = chatThreads.filter((chatThread: ChatThread) => {
     const text = search.toLowerCase();
     return (
       chatThread.name.toLowerCase().includes(text) ||
@@ -46,18 +46,18 @@ export default function ChatThreadList() {
         {filteredChatThreads.length === 0 ? (
           <div className="no-results">No conversations found</div>
         ) : (
-          filteredChatThreads.map((msg) => (
+          filteredChatThreads.map((msg: ChatThread) => (
 
             <ChatThreadItem
               key={msg.id}
               {...msg}
               active={msg.id === currentThread.id} // <-- condition for active
               onClick={(id) => { 
-                dispatch(selectChatThread({ id: id }));
+                dispatch(selectChatThread({ id }));
                 // Mark thread as read when selected
                 dispatch(markThreadAsReadAction(id));
-                // Also mark as read in backend if threadId is a string (backend thread)
-                if (typeof id === 'string' && webSocketService.isConnected()) {
+                // Also mark as read in backend and via websocket
+                if (webSocketService.isConnected()) {
                   dispatch(markThreadAsRead(id));
                   webSocketService.markThreadAsRead(id);
                 }
