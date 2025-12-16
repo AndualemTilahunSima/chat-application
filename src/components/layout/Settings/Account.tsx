@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { CameraIcon } from "../../components/Icons/CameraIcon";
-import { Button } from "../../components/ui/Button/Button";
-import { TextInput } from "../../components/ui/TextInput/TextInput";
+import { CameraIcon } from "../../../components/Icons/CameraIcon";
+import { Button } from "../../../components/ui/Button/Button";
+import { TextInput } from "../../../components/ui/TextInput/TextInput";
+import { useAppSelector } from "../../../store/hooks";
+import { selectAuthProfile } from "../../../store/slices/authSlice";
 
 export default function Account() {
     const [name, setName] = useState("You");
     const [status, setStatus] = useState("Available");
+    const profile = useAppSelector(selectAuthProfile);
 
     return (
         <section className="settings-panel">
@@ -23,7 +26,7 @@ export default function Account() {
                         className="camera-icon"
                         aria-label="Change profile picture"
                     >
-                        <CameraIcon color="#ffffff" />
+                        <CameraIcon size={20} color="#ffffff" />
                     </button>
                 </div>
                 <p className="profile-desc">
@@ -37,7 +40,7 @@ export default function Account() {
                     required
                     type="text"
                     id="displayName"
-                    value={name}
+                    value={profile?.displayName || name}
                     onChange={(event) => setName(event.target.value)}
                 />
             </div>
@@ -59,7 +62,7 @@ export default function Account() {
                     required
                     type="email"
                     id="emailAddress"
-                    value="user@example.com"
+                    value={profile?.email || name}
                     disabled
                 />
                 <p className="settings-note">Email cannot be changed</p>
@@ -71,3 +74,4 @@ export default function Account() {
         </section>
     );
 }
+

@@ -96,21 +96,3 @@
   width: fit-content;
   padding: 0.5rem;
 }
-
-.chat-input input {
-  padding: 0.9rem;
-  border-radius: 10px;
-}
-
-.chat-input-icon {
-  cursor: pointer;
-}
-
-.chat-input-icon {
-  border-radius: 3px;
-  padding: 0.5rem;
-}
-
-.chat-input-icon:hover {
-  background-color: #e2e2e6ff;
-}

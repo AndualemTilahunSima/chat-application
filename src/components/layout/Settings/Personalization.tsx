@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Button } from "../../components/ui/Button/Button";
-import { Select } from "../../components/ui/Select/Select";
+import { Button } from "../../../components/ui/Button/Button";
+import { Select } from "../../../components/ui/Select/Select";
 
 export default function Personalization() {
     const [theme, setTheme] = useState("light");

@@ -1,21 +1,29 @@
-import type { ButtonHTMLAttributes, PropsWithChildren } from "react";
+import { type MouseEvent, type ReactNode } from "react";
 import "./Button.css";
 
-type ButtonProps = PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>;
+type ButtonProps = {
+  type?: "button" | "submit" | "reset";
+  className?: string;
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+  children?: ReactNode;
+  disabled?: boolean;
+};
 
 export function Button({
-    children,
-    type = "button",
-    className = "",
-    ...rest
+  type = "button",
+  className = "",
+  onClick,
+  children,
+  disabled = false,
 }: ButtonProps) {
-    return (
-        <button
-            className={`app-button ${className}`.trim()}
-            type={type}
-            {...rest}
-        >
-            {children}
-        </button>
-    );
+  return (
+    <button
+      className={`app-button ${className}`.trim()}
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {children}
+    </button>
+  );
 }

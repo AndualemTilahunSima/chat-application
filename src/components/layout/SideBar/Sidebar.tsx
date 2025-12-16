@@ -1,10 +1,16 @@
 import { useState } from "react";
-import { ChevronLeftIcon } from "../../components/Icons/ChevronLeftIcon";
-import { LogoutIcon } from "../../components/Icons/LogoutIcon";
-import { MessageCircleIcon } from "../../components/Icons/MessageCircleIcon";
-import { SettingsIcon } from "../../components/Icons/SettingsIcon";
+import { ChevronLeftIcon } from "../../../components/Icons/ChevronLeftIcon";
+import { LogoutIcon } from "../../../components/Icons/LogoutIcon";
+import { MessageCircleIcon } from "../../../components/Icons/MessageCircleIcon";
+import { SettingsIcon } from "../../../components/Icons/SettingsIcon";
 import SidebarItem from "./SidebarItem";
 import "./Sidebar.css";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { logout, logoutUser, selectAuthProfile } from "../../../store/slices/authSlice";
+import { clearMessage } from "../../../store/slices/chatMessageSlice";
+import { clearChatThreads } from "../../../store/slices/chatThreadSlice";
+
 
 export type SidebarOption = "Chats" | "Settings";
 
@@ -19,6 +25,18 @@ export default function Sidebar({ onSelect }: SidebarProps) {
   function handleSelect(item: SidebarOption) {
     setActiveItem(item);
     onSelect(item);
+  }
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const profile = useAppSelector(selectAuthProfile);
+
+  async function handleLogout() {
+    await logoutUser(profile?.token);
+    dispatch(logout());
+    dispatch(clearMessage());
+    dispatch(clearChatThreads());
+    navigate("/login");
   }
 
   return (
@@ -53,11 +71,13 @@ export default function Sidebar({ onSelect }: SidebarProps) {
       </div>
 
       <div className="sidebar-footer">
-        <div className="logout">
+        <button className="logout" onClick={handleLogout}>
           <LogoutIcon size={18} />
           {!collapsed && "Logout"}
-        </div>
+        </button>
       </div>
     </div>
   );
 }
+
+

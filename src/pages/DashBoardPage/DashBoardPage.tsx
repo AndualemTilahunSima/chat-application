@@ -1,11 +1,12 @@
-import ChatWindow from "../ChatWindow/ChatWindow";
-import ChatThreadList from "../ChatThread/ChatThreadList";
-import Sidebar, { type SidebarOption } from "../SideBar/Sidebar";
+
 
 import "./DashBoardPage.css";
-import Settings from "../Settings/Settings";
 import { useState } from "react";
-import { ChatProvider } from "../ChatContext/ChatContext";
+import { ChatProvider } from "../../context/ChatContext/ChatContext";
+import Sidebar, { type SidebarOption } from "../../components/layout/SideBar/Sidebar";
+import ChatThreadList from "../../components/layout/ChatThread/ChatThreadList";
+import ChatWindow from "../../components/layout/ChatWindow/ChatWindow";
+import Settings from "../../components/layout/Settings/Settings";
 
 export default function DashBoardPage() {
   const [option, setOption] = useState<SidebarOption>("Chats");
@@ -17,10 +18,8 @@ export default function DashBoardPage() {
 
       {option === "Chats" && (
         <>
-          <ChatProvider>
             <ChatThreadList />
             <ChatWindow />
-          </ChatProvider>
         </>
       )}
 

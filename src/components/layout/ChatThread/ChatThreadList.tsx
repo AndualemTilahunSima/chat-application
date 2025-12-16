@@ -1,16 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./ChatThread.css"
 import ChatThreadItem from "./ChatThreadItem";
-import { Search } from "../../components/ui/Search/Search";
-import { useChatContext } from "../ChatContext/ChatContext";
-import { chatThreads } from "../ChatWindow/ChatMessages";
+import { Search } from "../../ui/Search/Search";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { selectChatThreads, selectChatThread, selectCurrentThread } from "../../../store/slices/chatThreadSlice";
+
 
 export default function ChatThreadList() {
   const [search, setSearch] = useState("");
-  const { selectedThreadId, setSelectedThreadId } = useChatContext();
-
+  // const { selectedThreadId, setSelectedThreadId } = useChatContext();
+  const chatThreads = useAppSelector(selectChatThreads);
+  const dispatch = useAppDispatch();
+  const currentThread = useAppSelector(selectCurrentThread) || { id: -1, name: "", avatar: "", preview: "", unread: 0 };
 
   
+
+  // const chatThreads = Threads.chatThreads
 
   // ---- FILTERING ----
   const filteredChatThreads = chatThreads.filter((chatThread) => {
@@ -44,8 +49,8 @@ export default function ChatThreadList() {
             <ChatThreadItem
               key={msg.id}
               {...msg}
-              active={msg.id === selectedThreadId} // <-- condition for active
-              onClick={(id) => setSelectedThreadId(id)} // update selected thread
+              active={msg.id === currentThread.id} // <-- condition for active
+              onClick={(id) => { dispatch(selectChatThread({ id: id })) }} // update selected thread
             />
           ))
         )}

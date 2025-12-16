@@ -10,7 +10,7 @@ export const ChatContext = createContext<ChatContextValue | undefined>(
 );
 
 export function ChatProvider({ children }: { children: ReactNode }) {
-  const [selectedThreadId, setSelectedThreadId] = useState<number>(1);
+  const [selectedThreadId, setSelectedThreadId] = useState<number>(-1);
 
   return (
     <ChatContext.Provider value={{ selectedThreadId, setSelectedThreadId }}>
