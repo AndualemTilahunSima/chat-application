@@ -187,9 +187,22 @@ export default function ChatWindow() {
         {messages.length === 0 ? (
           <div className="chat-empty-message">No messages yet. Say hi!</div>
         ) : (
-          messages.map((message, index) => (
-            <ChatBubble key={`${activeThread.id}-${index}`} {...message} />
-          ))
+          messages.map((message, index) => {
+            const senderName =
+              message.side === "right"
+                ? profile?.displayName || "You"
+                : activeThread.name;
+
+            return (
+              <ChatBubble
+                key={`${activeThread.id}-${index}`}
+                side={message.side}
+                text={message.text}
+                time={message.time}
+                senderName={senderName}
+              />
+            );
+          })
         )}
       </div>
 
