@@ -37,6 +37,10 @@ export type ChatThread = {
    * Convenience: the "other" user's id in the thread
    */
   receiverId: string;
+  /**
+   * Online status of the "other" user in this thread
+   */
+  status?: "online" | "offline";
 };
 
 export type ChatThreadState = {
@@ -79,13 +83,16 @@ export const loadChatThreads = createAsyncThunk<
 
   try {
     // 1) Load raw threads from messaging-service
-    const threadsResponse = await fetch("http://localhost:3001/messaging/threads", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${profile.token}`,
-      },
-    });
+    const threadsResponse = await fetch(
+      "http://localhost:3001/messaging/threads",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${profile.token}`,
+        },
+      }
+    );
 
     if (!threadsResponse.ok) {
       throw new Error(`HTTP error! status: ${threadsResponse.status}`);
@@ -108,6 +115,45 @@ export const loadChatThreads = createAsyncThunk<
     // Decode current user id from JWT
     const decoded = decodeJWT(profile.token);
     const currentUserId = decoded?.sub;
+
+    // Collect "other" user ids to batch fetch their online status
+    const otherUserIds = Array.from(
+      new Set(
+        rawThreads
+          .map((thread) => {
+            const participants = thread.participantIds || [];
+            return (
+              participants.find((id) => id !== currentUserId) ?? participants[0]
+            );
+          })
+          .filter((id): id is string => !!id)
+      )
+    );
+
+    let statusMap: Record<string, "online" | "offline"> = {};
+
+    if (otherUserIds.length > 0) {
+      try {
+        const statusResponse = await fetch(
+          `http://localhost:3001/messaging/status/users?userIds=${encodeURIComponent(
+            otherUserIds.join(",")
+          )}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${profile.token}`,
+            },
+          }
+        );
+
+        if (statusResponse.ok) {
+          statusMap = await statusResponse.json();
+        }
+      } catch (error) {
+        console.error("Failed to load users status", error);
+      }
+    }
 
     // 2) For each thread, load the "other" user from user-service to build
     //    display name and avatar.
@@ -149,7 +195,11 @@ export const loadChatThreads = createAsyncThunk<
             }
           }
         } catch (error) {
-          console.error("Failed to load user info for thread", thread.id, error);
+          console.error(
+            "Failed to load user info for thread",
+            thread.id,
+            error
+          );
         }
       }
 
@@ -166,6 +216,7 @@ export const loadChatThreads = createAsyncThunk<
         unread: thread.unreadCount ?? 0,
         participantIds,
         receiverId: otherUserId ?? "",
+        status: otherUserId ? statusMap[otherUserId] ?? "offline" : "offline",
       });
     }
 
@@ -209,13 +260,22 @@ const chatThreadSlice = createSlice({
       }
     },
 
-
     selectChatThread(state, action: PayloadAction<{ id: string }>) {
       const thread = state.threads.find((t) => t.id === action.payload.id);
       if (thread) {
         state.currentThread = { id: action.payload.id };
       }
-
+    },
+    setThreadStatusForUser(
+      state,
+      action: PayloadAction<{ userId: string; status: "online" | "offline" }>
+    ) {
+      const { userId, status } = action.payload;
+      state.threads.forEach((thread) => {
+        if (thread.receiverId === userId) {
+          thread.status = status;
+        }
+      });
     },
   },
   extraReducers: (builder) => {
@@ -235,7 +295,13 @@ const chatThreadSlice = createSlice({
   },
 });
 
-export const { markThreadAsRead, updatePreview, selectChatThread, clearChatThreads } = chatThreadSlice.actions;
+export const {
+  markThreadAsRead,
+  updatePreview,
+  selectChatThread,
+  clearChatThreads,
+  setThreadStatusForUser,
+} = chatThreadSlice.actions;
 export default chatThreadSlice.reducer;
 
 // Selectors

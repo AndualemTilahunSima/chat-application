@@ -8,7 +8,7 @@ import { SmileIcon } from "../../Icons/SmileIcon";
 import { Button } from "../../ui/Button/Button";
 import { ChatInput } from "../../ui/ChatInput/ChatInput";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { selectChatThreads, selectCurrentThread, markThreadAsRead as markThreadAsReadAction } from "../../../store/slices/chatThreadSlice";
+import { selectChatThreads, selectCurrentThread, markThreadAsRead as markThreadAsReadAction, setThreadStatusForUser } from "../../../store/slices/chatThreadSlice";
 import { loadMessagesByThread, selectMessagesByThread, addMessage, markThreadAsRead, sendMessage } from "../../../store/slices/chatMessageSlice";
 import { webSocketService } from "../../../services/websocket.service";
 import { selectAuthProfile } from "../../../store/slices/authSlice";
@@ -96,10 +96,18 @@ export default function ChatWindow() {
 
     const unsubscribeNewMessage = webSocketService.on('new-message', handleNewMessage);
     const unsubscribeMessageSent = webSocketService.on('message-sent', handleNewMessage);
+    const unsubscribeUserOnline = webSocketService.on('user-online', (data: { userId: string }) => {
+      dispatch(setThreadStatusForUser({ userId: data.userId, status: "online" }));
+    });
+    const unsubscribeUserOffline = webSocketService.on('user-offline', (data: { userId: string }) => {
+      dispatch(setThreadStatusForUser({ userId: data.userId, status: "offline" }));
+    });
 
     return () => {
       unsubscribeNewMessage();
       unsubscribeMessageSent();
+      unsubscribeUserOnline();
+      unsubscribeUserOffline();
     };
   }, [profile?.token, dispatch]);
 
@@ -166,7 +174,9 @@ export default function ChatWindow() {
         <img className="avatar" src={activeThread.avatar} alt={activeThread.name} />
         <div>
           <div className="chat-name">{activeThread.name}</div>
-          <span className="chat-status">online</span>
+          <span className="chat-status">
+            {activeThread.status === "online" ? "online" : "offline"}
+          </span>
         </div>
         <div className="chat-menu">
           <EllipsisVerticalIcon size={18} />
