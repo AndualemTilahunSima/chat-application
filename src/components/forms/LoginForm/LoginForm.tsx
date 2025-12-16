@@ -7,6 +7,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { loginUser, selectAuthError, selectAuthLoading, selectAuthProfile } from "../../../store/slices/authSlice";
 import { loadChatThreads } from "../../../store/slices/chatThreadSlice";
+import { webSocketService } from "../../../services/websocket.service";
 
 
 export function LoginForm() {
@@ -22,11 +23,13 @@ export function LoginForm() {
     // }
 
     useEffect(() => {
-        if (profile != null) {
+        if (profile != null && profile.token) {
             navigate("/dashboard");
             dispatch(loadChatThreads());
+            // Connect WebSocket
+            webSocketService.connect(profile.token);
         }
-    }, [profile, dispatch]);
+    }, [profile, dispatch, navigate]);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

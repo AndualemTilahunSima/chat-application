@@ -3,7 +3,9 @@ import "./ChatThread.css"
 import ChatThreadItem from "./ChatThreadItem";
 import { Search } from "../../ui/Search/Search";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { selectChatThreads, selectChatThread, selectCurrentThread } from "../../../store/slices/chatThreadSlice";
+import { selectChatThreads, selectChatThread, selectCurrentThread, markThreadAsRead as markThreadAsReadAction } from "../../../store/slices/chatThreadSlice";
+import { markThreadAsRead } from "../../../store/slices/chatMessageSlice";
+import { webSocketService } from "../../../services/websocket.service";
 
 
 export default function ChatThreadList() {
@@ -50,7 +52,16 @@ export default function ChatThreadList() {
               key={msg.id}
               {...msg}
               active={msg.id === currentThread.id} // <-- condition for active
-              onClick={(id) => { dispatch(selectChatThread({ id: id })) }} // update selected thread
+              onClick={(id) => { 
+                dispatch(selectChatThread({ id: id }));
+                // Mark thread as read when selected
+                dispatch(markThreadAsReadAction(id));
+                // Also mark as read in backend if threadId is a string (backend thread)
+                if (typeof id === 'string' && webSocketService.isConnected()) {
+                  dispatch(markThreadAsRead(id));
+                  webSocketService.markThreadAsRead(id);
+                }
+              }} // update selected thread
             />
           ))
         )}

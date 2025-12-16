@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { logout, logoutUser, selectAuthProfile } from "../../../store/slices/authSlice";
 import { clearMessage } from "../../../store/slices/chatMessageSlice";
 import { clearChatThreads } from "../../../store/slices/chatThreadSlice";
+import { webSocketService } from "../../../services/websocket.service";
 
 
 export type SidebarOption = "Chats" | "Settings";
@@ -33,6 +34,7 @@ export default function Sidebar({ onSelect }: SidebarProps) {
 
   async function handleLogout() {
     await logoutUser(profile?.token);
+    webSocketService.disconnect();
     dispatch(logout());
     dispatch(clearMessage());
     dispatch(clearChatThreads());
