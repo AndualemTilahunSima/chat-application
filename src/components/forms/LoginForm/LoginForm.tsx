@@ -3,7 +3,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { MessageCircleIcon } from "../../Icons/MessageCircleIcon";
 import { TextInput } from "../../ui/TextInput/TextInput";
 import { Button } from "../../ui/Button/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { loginUser, selectAuthError, selectAuthLoading, selectAuthProfile } from "../../../store/slices/authSlice";
 import { loadChatThreads } from "../../../store/slices/chatThreadSlice";
@@ -72,6 +72,9 @@ export function LoginForm() {
 
                     <Button type="submit">Sign in</Button>
                     {error && <p style={{ color: "red" }}>{error}</p>}
+                    <p style={{ textAlign: "center", marginTop: "0.5rem" }}>
+                        Don't have an account? <Link to="/register" style={{ color: "#00bba7", textDecoration: "none" }}>Sign up</Link>
+                    </p>
                 </form>
             </div>
         </div>
